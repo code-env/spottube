@@ -2,6 +2,13 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { siteConfig } from '@/config/site';
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs';
 
 const geistMono = localFont({
   src: [
@@ -82,7 +89,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${geistMono.className} antialiased`}>{children}</body>
+      <ClerkProvider>
+        <html lang="en">
+          <body className={` ${geistMono.className} antialiased`}>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            {children}
+          </body>
+        </html>
+      </ClerkProvider>
     </html>
   );
 }
